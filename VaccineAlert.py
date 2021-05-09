@@ -23,19 +23,42 @@ configur.read('config.ini')
 
 # Telegram setup
 bot_token = configur.get('telegram', 'bot_token')
-bot_chatID = configur.get('telegram', 'bot_chatID')
+
+# Telegram setup Pune
+# Pune District
+chatIdPuneDistrict = configur.get('telegram', 'PuneDistrict')
+# Pune City
+chatIdPuneCity = configur.get('telegram', 'PuneCity')
+
+# Telegram setup Nashik Group
+# Nashik District
+chatIdNskDistrict = configur.get('telegram', 'NashikDistrict')
+# Nashik City
+chatIdNskCity = configur.get('telegram', 'NashikCity')
 
 #District data
 state = configur.get('data', 'state')
 districts = json.loads(configur.get('data', 'districts'))
-pincodes = json.loads(configur.get('data', 'pincodes'))
+pincodeNashik = json.loads(configur.get('data', 'pincodeNashik'))
+pincodePune = json.loads(configur.get('data', 'pincodePune'))
+pincodes = [pincodeNashik] + [pincodePune]
+pinCity = json.loads(configur.get('data', 'pinCity'))
 
 
 # In[ ]:
 
 
-def sendMsg(name,address,pin,vaccine,v_count,age):
-    msg = "ALERT! Slot available!\nName: " + str(name) + "\nAddress : " + str(address) + "\nPincode : " + str(pin) + "\nVaccine : " + str(vaccine) + "\nAge : " + str(age) + "+" + "\nTotal Slots : " + str(v_count)
+def sendMsg(place,name,address,pin,vaccine,v_count,age,fee):
+    if(place == 389): #NashikDistrictCode
+        bot_chatID = chatIdNskDistrict
+    elif(place.upper() == "NashikCity".upper()):
+        bot_chatID = chatIdNskCity
+    elif(place == 363): #PuneDistrictCode
+        bot_chatID = chatIdPuneDistrict
+    elif(place.upper() == "PuneCity".upper()):
+        bot_chatID = chatIdPuneCity
+
+    msg = "ALERT! Slot available!\nName: " + str(name) + "\nAddress : " + str(address) + "\nPincode : " + str(pin) + "\nVaccine : " + str(vaccine) + " : " + str(fee) + "\nAge : " + str(age) + "+" + "\nTotal Slots : " + str(v_count)
     msg = format(quote_plus(msg))
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&text=' + msg
 #     print(send_text)
@@ -87,38 +110,39 @@ def getDistrictId(s_name,d_name):
 # In[ ]:
 
 
-def checkSlotsByPin(pincode):
-    try:
-        today = datetime.now().date().strftime('%d-%m-%Y');
-        url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByPin?pincode="+str(pincode)+"&date="+str(today)
+def checkSlotsByPin(pincodes):
+    i = 0
+    for pincode in pincodes:
+        for pin in pincode:
+            try:
+                today = datetime.now().date().strftime('%d-%m-%Y');
+                url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByPin?pincode="+str(pin)+"&date="+str(today)
 
-        headers = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"}
-        response = requests.get(url, headers=headers, auth=HTTPBasicAuth('user', 'pass'))
-#         print(response)
-        response = response.content.decode()
-#         pprint(response)
-        jsonData = json.loads(response)
-        jsonData = jsonData['centers']
-        
-        for center in jsonData:
-            centerName = center['name']
-            address = center['address']
-            pin = center['pincode']
-            for sessions in center['sessions']:
-                if (today == sessions['date']):
-                    if(sessions['available_capacity'] > 0):
-                        if center['center_id'] in entry_list:
-                            pass
-#                             print('center already alerted')
-#                             print(center['center_id'],centerName,address,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'])
-                        else:
-                            print("Slot Available!")
-                            entry_list.append(center['center_id'])
-                            sendMsg(centerName,address,pin,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'])
-                            print(center['center_id'],centerName,address,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'])
-    except:
-        pass
-#         print(sys.exc_info())
+                headers = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"}
+                response = requests.get(url, headers=headers)
+                response = response.content.decode()
+
+                jsonData = json.loads(response)
+                jsonData = jsonData['centers']
+
+                for center in jsonData:
+                    centerName = center['name']
+                    address = center['address']
+                    pin = center['pincode']
+                    fee = center['fee_type']
+                    for sessions in center['sessions']:
+                        if (today == sessions['date']):
+                            if(sessions['available_capacity'] > 0):
+                                if center['center_id'] in entry_list:
+                                    pass
+                                else:
+                                    print("Slot Available!")
+                                    entry_list.append(center['center_id'])
+                                    sendMsg(pinCity[i],centerName,address,pin,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'],fee)
+                                    print(center['center_id'],centerName,address,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'],fee)
+            except:
+                pass
+        i += 1
 
 
 # In[ ]:
@@ -133,32 +157,28 @@ def checkSlotsByDistrict(s_name, d_name):
 
             headers = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"}
             response = requests.get(url, headers=headers)
-#             print(response)
+
             response = response.content.decode()
             jsonData = json.loads(response)
             jsonData = jsonData['centers']
 
-#             pprint(jsonData)
             for center in jsonData:
                 centerName = center['name']
                 address = center['address']
                 pin = center['pincode']
+                fee = center['fee_type']
                 for sessions in center['sessions']:
                     if (today == sessions['date']):
                         if(sessions['available_capacity'] > 0):
                             if center['center_id'] in entry_list:
                                 pass
-#                                 print('center already alerted')
-#                                 print(center['center_id'],centerName,address,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'])
                             else:
                                 print("Slot Available!")
                                 entry_list.append(center['center_id'])
-                                sendMsg(centerName,address,pin,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'])
-                                print(center['center_id'],centerName,address,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'])
-#             print("loop")
+                                sendMsg(d_id,centerName,address,pin,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'],fee)
+                                print(center['center_id'],centerName,address,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'],fee)
         except:
             pass
-#             print(sys.exc_info())
 
 
 # In[ ]:
@@ -171,18 +191,19 @@ while not done:
     now = datetime.now().time()
     
     if(now > time(7,00) and now < time(23,00)):
-#         print("By Pin")
-        for pin in pincodes:
-#             print(pin)
-            checkSlotsByPin(pin)
-#         print("By District")
+        
+        #By District
         checkSlotsByDistrict(state,districts)
-#         print("loop : " + str(i) + " Time : " + str(now))
+    
+        #By Pin
+        checkSlotsByPin(pincodes)
+        
+        print("loop : " + str(i) + " Time : " + str(now))
         i += 1
-        print(entry_list)
+#         print(entry_list)
         sleep.sleep(5)
         if(i%120 == 0):
-            print("list cleared")
+            #list cleared
             entry_list = []
     else:
         done = True
