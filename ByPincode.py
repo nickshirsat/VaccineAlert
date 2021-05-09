@@ -44,18 +44,21 @@ hitCount = 0
 
 
 def sendMsg(place,name,address,pin,vaccine,v_count,age,fee):
-    if(place.upper() == "NashikCity".upper()):
-        bot_chatID = chatIdNskCity
-    elif(place.upper() == "PuneCity".upper()):
-        bot_chatID = chatIdPuneCity
+    try:
+        if(place.upper() == "NashikCity".upper()):
+            bot_chatID = chatIdNskCity
+        elif(place.upper() == "PuneCity".upper()):
+            bot_chatID = chatIdPuneCity
 
-    msg = "ALERT! Slot available!\nName: " + str(name) + "\nAddress : " + str(address) + "\nPincode : " + str(pin) + "\nVaccine : " + str(vaccine) + " : " + str(fee) + "\nAge : " + str(age) + "+" + "\nTotal Slots : " + str(v_count)
-    msg = format(quote_plus(msg))
-    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&text=' + msg
-#     print(send_text)
-    response = requests.get(send_text)
-    return response.json()
-
+        msg = "ALERT! Slot available!\nName: " + str(name) + "\nAddress : " + str(address) + "\nPincode : " + str(pin) + "\nVaccine : " + str(vaccine) + " : " + str(fee) + "\nAge : " + str(age) + "+" + "\nTotal Slots : " + str(v_count)
+        msg = format(quote_plus(msg))
+        send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&text=' + msg
+        print(send_text)
+        response = requests.get(send_text)
+        return response.json()
+    except:
+#         pass
+        print(sys.exc_info())
 
 # In[6]:
 
