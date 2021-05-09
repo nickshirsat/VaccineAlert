@@ -137,9 +137,9 @@ def checkSlotsByPin(pincodes):
                                     pass
                                 else:
                                     print("Slot Available!")
+                                    print(center['center_id'],centerName,address,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'],fee)
                                     entry_list.append(center['center_id'])
                                     sendMsg(pinCity[i],centerName,address,pin,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'],fee)
-                                    print(center['center_id'],centerName,address,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'],fee)
             except:
                 pass
         i += 1
@@ -174,9 +174,9 @@ def checkSlotsByDistrict(s_name, d_name):
                                 pass
                             else:
                                 print("Slot Available!")
+                                print(center['center_id'],centerName,address,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'],fee)
                                 entry_list.append(center['center_id'])
                                 sendMsg(d_id,centerName,address,pin,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'],fee)
-                                print(center['center_id'],centerName,address,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'],fee)
         except:
             pass
 
@@ -200,10 +200,17 @@ while not done:
         
         print("loop : " + str(i) + " Time : " + str(now))
         i += 1
-#         print(entry_list)
+        print(entry_list)
         sleep.sleep(5)
         if(i%120 == 0):
             #list cleared
             entry_list = []
     else:
         done = True
+
+
+# In[ ]:
+
+
+
+
