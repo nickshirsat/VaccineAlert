@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[1]:
 
 
 import requests
 import json
 from pprint import pprint
 from datetime import datetime,time
+from datetime import timedelta
 import time as sleep
 import sys
 from configparser import ConfigParser
@@ -15,7 +16,7 @@ from requests.auth import HTTPBasicAuth
 from urllib.parse import quote_plus
 
 
-# In[ ]:
+# In[2]:
 
 
 configur = ConfigParser() 
@@ -40,7 +41,7 @@ global hitCount
 hitCount = 0
 
 
-# In[ ]:
+# In[3]:
 
 
 def sendMsg(place,name,address,pin,vaccine,v_count,age,fee):
@@ -61,7 +62,7 @@ def sendMsg(place,name,address,pin,vaccine,v_count,age,fee):
         print(sys.exc_info())
 
 
-# In[ ]:
+# In[4]:
 
 
 def checkSlotsByPin(pincodes):
@@ -70,9 +71,11 @@ def checkSlotsByPin(pincodes):
     i = 0
     for pincode in pincodes:
         for pin in pincode:
-            sleep.sleep(0.5)
             try:
-                today = datetime.now().date().strftime('%d-%m-%Y');
+                print(pin)
+                today = datetime.now().date() + timedelta(1)
+#                 print(today)
+                today = today.strftime('%d-%m-%Y');
                 url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByPin?pincode="+str(pin)+"&date="+str(today)
 
                 headers = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"}
@@ -98,12 +101,13 @@ def checkSlotsByPin(pincodes):
                                     pass
                                 else:
                                     print("Slot Available!")
-                                    print(center['center_id'],centerName,address,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'],fee)
                                     entry_list.append(center['center_id'])
-                                    print(center['center_id'],centerName,address,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'],fee)
                                     sendMsg(pinCity[i],centerName,address,pin,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'],fee)
+                            print(center['center_id'],centerName,address,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'],fee)
+
             except:
                 pass
+            sleep.sleep(0.5)
 #                 print(sys.exc_info())
 #         print(i)
         i += 1
