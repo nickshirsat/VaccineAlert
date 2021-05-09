@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[ ]:
 
 
 import requests
@@ -15,7 +15,7 @@ from requests.auth import HTTPBasicAuth
 from urllib.parse import quote_plus
 
 
-# In[2]:
+# In[ ]:
 
 
 configur = ConfigParser() 
@@ -40,7 +40,7 @@ global hitCount
 hitCount = 0
 
 
-# In[3]:
+# In[ ]:
 
 
 def sendMsg(place,name,address,pin,vaccine,v_count,age,fee):
@@ -60,7 +60,8 @@ def sendMsg(place,name,address,pin,vaccine,v_count,age,fee):
 #         pass
         print(sys.exc_info())
 
-# In[6]:
+
+# In[ ]:
 
 
 def checkSlotsByPin(pincodes):
@@ -69,27 +70,28 @@ def checkSlotsByPin(pincodes):
     i = 0
     for pincode in pincodes:
         for pin in pincode:
-            sleep.sleep(1)
+            sleep.sleep(0.5)
             try:
                 today = datetime.now().date().strftime('%d-%m-%Y');
                 url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByPin?pincode="+str(pin)+"&date="+str(today)
 
                 headers = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"}
                 response = requests.get(url, headers=headers)
-                # print(response)
-                # print(hitCount)
+#                 print(response)
+#                 print(hitCount)
                 hitCount += 1
                 response = response.content.decode()
 
                 jsonData = json.loads(response)
                 jsonData = jsonData['centers']
-
+#                 pprint(jsonData)
                 for center in jsonData:
                     centerName = center['name']
                     address = center['address']
                     pin = center['pincode']
                     fee = center['fee_type']
                     for sessions in center['sessions']:
+#                         print(sessions)
                         if (today == sessions['date']):
                             if(sessions['available_capacity'] > 0):
                                 if center['center_id'] in entry_list:
@@ -98,14 +100,16 @@ def checkSlotsByPin(pincodes):
                                     print("Slot Available!")
                                     print(center['center_id'],centerName,address,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'],fee)
                                     entry_list.append(center['center_id'])
+                                    print(center['center_id'],centerName,address,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'],fee)
                                     sendMsg(pinCity[i],centerName,address,pin,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'],fee)
             except:
                 pass
 #                 print(sys.exc_info())
-            i += 1
+#         print(i)
+        i += 1
 
 
-# In[7]:
+# In[ ]:
 
 
 done = False
@@ -132,12 +136,6 @@ while not done:
     else:
         done = True
     print(hitCount)
-
-
-# In[ ]:
-
-
-
 
 
 # In[ ]:
