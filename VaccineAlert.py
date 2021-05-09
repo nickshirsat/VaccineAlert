@@ -153,7 +153,7 @@ while not done:
     print(hitCount)
     now = datetime.now().time()
     
-    if(now > time(7,00) and now < time(23,00)):
+    if(now > time(7,00) and now < time(23,59)):
         
         #By District
         checkSlotsByDistrict(state,districts)
