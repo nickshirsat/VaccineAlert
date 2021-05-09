@@ -54,7 +54,7 @@ def sendMsg(place,name,address,pin,vaccine,v_count,age,fee):
         msg = "ALERT! Slot available!\nName: " + str(name) + "\nAddress : " + str(address) + "\nPincode : " + str(pin) + "\nVaccine : " + str(vaccine) + " : " + str(fee) + "\nAge : " + str(age) + "+" + "\nTotal Slots : " + str(v_count)
         msg = format(quote_plus(msg))
         send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&text=' + msg
-        print(send_text)
+        # print(send_text)
         response = requests.get(send_text)
         return response.json()
     except:
