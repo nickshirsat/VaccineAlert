@@ -73,7 +73,7 @@ def checkSlotsByPin(pincodes):
         for pin in pincode:
             try:
                 print(pin)
-                today = datetime.now().date() + timedelta(1)
+                today = datetime.now().date()
 #                 print(today)
                 today = today.strftime('%d-%m-%Y');
                 url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByPin?pincode="+str(pin)+"&date="+str(today)
@@ -124,7 +124,7 @@ while not done:
     hitCount = 0
     print(hitCount)
     now = datetime.now().time()
-    
+
     #By Pin
     checkSlotsByPin(pincodes)
     
