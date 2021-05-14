@@ -154,7 +154,7 @@ entry_list = []
 while not done:
     
     hitCount = 0
-    print(hitCount)
+    # print(hitCount)
     now = datetime.now().time()
     
     #By District
