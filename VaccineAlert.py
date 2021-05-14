@@ -109,6 +109,7 @@ def getDistrictId(s_name,d_name):
 def checkSlotsByDistrict(s_name, d_name):
     global hitCount
     ids = getDistrictId(s_name, d_name)
+    print(ids)
     for d_id in ids: 
         sleep.sleep(1)
         try:
