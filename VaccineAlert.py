@@ -120,7 +120,7 @@ def checkSlotsByDistrict(s_name, d_name):
             headers = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"}
             response = requests.get(url, headers=headers)
             print(response)
-
+            print("Test")
             hitCount += 1
             response = response.content.decode()
             jsonData = json.loads(response)
@@ -154,7 +154,7 @@ entry_list = []
 while not done:
     
     hitCount = 0
-    # print(hitCount)
+    print(hitCount)
     now = datetime.now().time()
     
     #By District
