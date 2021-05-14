@@ -110,6 +110,7 @@ def checkSlotsByDistrict(s_name, d_name):
     global hitCount
     ids = getDistrictId(s_name, d_name)
     for d_id in ids: 
+        print(d_id)
         sleep.sleep(1)
         try:
             today = datetime.now().date() + timedelta(1)
