@@ -120,6 +120,7 @@ def checkSlotsByDistrict(s_name, d_name):
             headers = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"}
             response = requests.get(url, headers=headers)
             print(response)
+
             hitCount += 1
             response = response.content.decode()
             jsonData = json.loads(response)
@@ -156,21 +157,18 @@ while not done:
     print(hitCount)
     now = datetime.now().time()
     
-    if(now > time(7,00) and now < time(23,59)):
-        
-        #By District
-        checkSlotsByDistrict(state,districts)
+    #By District
+    checkSlotsByDistrict(state,districts)
+
     
-        
-        print("loop : " + str(i) + " Time : " + str(now))
-        i += 1
-        print(entry_list)
-        sleep.sleep(5)
-        if(i%120 == 0):
-            #list cleared
-            entry_list = []
-    else:
-        done = True
+    print("loop : " + str(i) + " Time : " + str(now))
+    i += 1
+    print(entry_list)
+    sleep.sleep(5)
+    if(i%120 == 0):
+        #list cleared
+        entry_list = []
+   
     print(hitCount)
 
 
