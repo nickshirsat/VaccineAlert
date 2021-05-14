@@ -109,7 +109,6 @@ def getDistrictId(s_name,d_name):
 def checkSlotsByDistrict(s_name, d_name):
     global hitCount
     ids = getDistrictId(s_name, d_name)
-    print(ids)
     for d_id in ids: 
         sleep.sleep(1)
         try:
@@ -117,7 +116,7 @@ def checkSlotsByDistrict(s_name, d_name):
 #                 print(today)
             today = today.strftime('%d-%m-%Y');
             url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id="+str(d_id)+"&date="+str(today)
-
+            print(url)
             headers = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"}
             response = requests.get(url, headers=headers)
             print(response)
