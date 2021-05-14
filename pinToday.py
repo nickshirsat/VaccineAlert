@@ -80,7 +80,7 @@ def checkSlotsByPin(pincodes):
 
                 headers = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"}
                 response = requests.get(url, headers=headers)
-#                 print(response)
+                print(response)
 #                 print(hitCount)
                 hitCount += 1
                 response = response.content.decode()
@@ -107,7 +107,7 @@ def checkSlotsByPin(pincodes):
 
             except:
                 pass
-            sleep.sleep(0.5)
+            sleep.sleep(1)
 #                 print(sys.exc_info())
 #         print(i)
         i += 1
