@@ -111,7 +111,6 @@ def checkSlotsByDistrict(s_name, d_name):
     ids = getDistrictId(s_name, d_name)
     for d_id in ids: 
         print(d_id)
-        sleep.sleep(1)
         try:
             today = datetime.now().date() + timedelta(1)
 #                 print(today)
@@ -144,6 +143,7 @@ def checkSlotsByDistrict(s_name, d_name):
                                 sendMsg(d_id,centerName,address,pin,sessions['vaccine'],sessions['available_capacity'],sessions['min_age_limit'],fee)
         except:
             pass
+        sleep.sleep(1)
 
 
 # In[ ]:
