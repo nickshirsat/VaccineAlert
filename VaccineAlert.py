@@ -164,7 +164,7 @@ while not done:
     i += 1
     print(entry_list)
     sleep.sleep(300)
-    if(i%120 == 0):
+    if(i%3 == 0):
         #list cleared
         entry_list = []
    
