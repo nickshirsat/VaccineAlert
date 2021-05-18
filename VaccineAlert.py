@@ -70,7 +70,7 @@ def getStateId(name):
         hitCount += 1
         response = response.content.decode()
         jsonData = json.loads(response)
-#         print(jsonData)
+        # print(jsonData)
         for state in jsonData['states']:
             if (state['state_name'].upper() == name.upper()):
                 s_id = state['state_id']
@@ -94,6 +94,7 @@ def getDistrictId(s_name,d_name):
         hitCount += 1
         response = response.content.decode()
         jsonData = json.loads(response)
+        # print(jsonData)
         for d in d_name:
             for district in jsonData['districts']:
                 if (district['district_name'].upper() == d.upper()):
@@ -110,17 +111,15 @@ def checkSlotsByDistrict(s_name, d_name):
     global hitCount
     ids = getDistrictId(s_name, d_name)
     for d_id in ids: 
-        print(d_id)
         try:
             today = datetime.now().date() + timedelta(1)
-#                 print(today)
+            # print(today)
             today = today.strftime('%d-%m-%Y');
             url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id="+str(d_id)+"&date="+str(today)
             print(url)
             headers = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"}
             response = requests.get(url, headers=headers)
-            print(response)
-            print("Test")
+
             hitCount += 1
             response = response.content.decode()
             jsonData = json.loads(response)
@@ -145,7 +144,6 @@ def checkSlotsByDistrict(s_name, d_name):
             pass
         sleep.sleep(1)
 
-
 # In[ ]:
 
 
@@ -165,13 +163,12 @@ while not done:
     print("loop : " + str(i) + " Time : " + str(now))
     i += 1
     print(entry_list)
-    sleep.sleep(5)
+    sleep.sleep(300)
     if(i%120 == 0):
         #list cleared
         entry_list = []
    
     print(hitCount)
-
 
 # In[ ]:
 

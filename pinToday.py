@@ -131,7 +131,7 @@ while not done:
     print("loop : " + str(i) + " Time : " + str(now))
     i += 1
     print(entry_list)
-    sleep.sleep(10)
+    sleep.sleep(300)
     if(i%120 == 0):
         #list cleared
         entry_list = []
