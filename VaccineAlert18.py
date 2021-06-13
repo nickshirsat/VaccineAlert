@@ -159,17 +159,18 @@ def checkSlotsByDistrict():
                 for sessions in center['sessions']:
                     if (today == sessions['date']):
                         if(sessions['available_capacity'] > 0):
-                            if(sessions['min_age_limit']) == 18):
-                                print(center['center_id'], entry_list)
-    #                             return
-                                if center['center_id'] in entry_list:
-                                    print("pass")
-                                    pass
-                                else:
-                                    print("Slot Available!")
-                                    print(d_id,centerName,address,pin,sessions['vaccine'],sessions['available_capacity'], sessions['available_capacity_dose1'], sessions['available_capacity_dose2'], sessions['min_age_limit'], fee, sessions['date'])
-                                    entry_list.append(center['center_id'])
-                                    sendMsg(d_id,centerName,address,pin,sessions['vaccine'],sessions['available_capacity'], sessions['available_capacity_dose1'], sessions['available_capacity_dose2'], sessions['min_age_limit'], fee, sessions['date'])
+                            if(sessions['min_age_limit'] == 18):
+                                if(sessions['available_capacity_dose1'] > 0):
+                                    print(center['center_id'], entry_list)
+        #                             return
+                                    if center['center_id'] in entry_list:
+                                        # print("pass")
+                                        pass
+                                    else:
+                                        print("Slot Available!")
+                                        print(d_id,centerName,address,pin,sessions['vaccine'],sessions['available_capacity'], sessions['available_capacity_dose1'], sessions['available_capacity_dose2'], sessions['min_age_limit'], fee, sessions['date'])
+                                        entry_list.append(center['center_id'])
+                                        sendMsg(d_id,centerName,address,pin,sessions['vaccine'],sessions['available_capacity'], sessions['available_capacity_dose1'], sessions['available_capacity_dose2'], sessions['min_age_limit'], fee, sessions['date'])
 
             sleep.sleep(5)
         except Exception as e:
