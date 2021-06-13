@@ -159,7 +159,7 @@ def checkSlotsByDistrict():
                 for sessions in center['sessions']:
                     if (today == sessions['date']):
                         if(sessions['available_capacity'] > 0):
-                            if(sessions['min_age_limit'] == 18):
+                            if(sessions['min_age_limit']) == 18):
                                 print(center['center_id'], entry_list)
     #                             return
                                 if center['center_id'] in entry_list:
