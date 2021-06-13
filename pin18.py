@@ -84,7 +84,8 @@ def checkSlotsByPin(pincodes):
                 else:
                     today = datetime.now().date()
                 today = today.strftime('%d-%m-%Y')
-                # print(today)
+                if(i == 0):
+                    print(today)
                 url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode="+str(pin)+"&date="+str(today)
 
                 headers = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"}
@@ -149,10 +150,10 @@ while not done:
     print("loop : " + str(i) + " Time : " + str(now))
     i += 1
     loop2 += 1
+    print(entry_list)
     if(loop2%2 == 0):
         loop2 = 0
         sleep.sleep(180)
-    print(entry_list)
     if(i%3 == 0):
         # ~10 mins
         #list cleared

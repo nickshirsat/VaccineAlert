@@ -130,6 +130,7 @@ def sendMsg(place,name,address,pin,vaccine,v_count,f_dose, s_dose, age, fee, dat
 
 def checkSlotsByDistrict():
     global hitCount
+    global dateFlag
 
     ids = d_ids
 #     print(ids)
@@ -138,8 +139,12 @@ def checkSlotsByDistrict():
 #         print(d_id)
         
         try:
-            today = datetime.now().date() + timedelta(1)
-#             print(today)
+            if(dateFlag):
+                today = datetime.now().date() + timedelta(1)
+#                 print(today)
+            else:
+                today = datetime.now().date()
+            print(today)
             today = today.strftime('%d-%m-%Y');
             url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id="+str(d_id)+"&date="+str(today)
 #             print(url)
@@ -172,7 +177,7 @@ def checkSlotsByDistrict():
                                         entry_list.append(center['center_id'])
                                         sendMsg(d_id,centerName,address,pin,sessions['vaccine'],sessions['available_capacity'], sessions['available_capacity_dose1'], sessions['available_capacity_dose2'], sessions['min_age_limit'], fee, sessions['date'])
 
-            sleep.sleep(5)
+            sleep.sleep(1)
         except Exception as e:
             print(e)
         
@@ -184,6 +189,8 @@ def checkSlotsByDistrict():
 done = False
 i = 1
 entry_list = []
+dateFlag = False
+loop2 = 0
 while not done:
     
 #     hitCount = 0
@@ -193,14 +200,18 @@ while not done:
     
     #By District
     checkSlotsByDistrict()
+    dateFlag = not dateFlag
 
     
     print("loop : " + str(i) + " Time : " + str(now))
     i += 1
     print(entry_list)
-    sleep.sleep(10)
+    loop2 += 1
+    if(loop2%2 == 0):
+        loop2 = 0
+        sleep.sleep(180)
     
-    if(i%30 == 0):
+    if(i%3 == 0):
         # 10 mins
         #list cleared
         print("list cleared")
