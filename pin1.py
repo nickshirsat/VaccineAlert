@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[8]:
 
 
 import requests
 import json
 from pprint import pprint
-from datetime import datetime,time
+from datetime import datetime,time, timedelta
 from datetime import timedelta
 import time as sleep
 import sys
@@ -16,7 +16,7 @@ from requests.auth import HTTPBasicAuth
 from urllib.parse import quote_plus
 
 
-# In[2]:
+# In[9]:
 
 
 configur = ConfigParser() 
@@ -41,7 +41,7 @@ global hitCount
 hitCount = 0
 
 
-# In[3]:
+# In[10]:
 
 
 def sendMsg(place,name,address,pin,vaccine,v_count,f_dose, s_dose, age, fee, date):
@@ -62,7 +62,7 @@ def sendMsg(place,name,address,pin,vaccine,v_count,f_dose, s_dose, age, fee, dat
         print(sys.exc_info())
 
 
-# In[4]:
+# In[11]:
 
 
 def checkSlotsByPin(pincodes):
@@ -73,10 +73,10 @@ def checkSlotsByPin(pincodes):
         for pin in pincode:
             try:
                 print(pin)
-                today = datetime.now().date() + timedelta(1)
+                today = datetime.now().date()
 #                 print(today)
-                today = today.strftime('%d-%m-%Y');
-                url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByPin?pincode="+str(pin)+"&date="+str(today)
+                today = today.strftime('%d-%m-%Y')
+                url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode="+str(pin)+"&date="+str(today)
 
                 headers = {'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"}
                 response = requests.get(url, headers=headers)
@@ -84,10 +84,11 @@ def checkSlotsByPin(pincodes):
 #                 print(hitCount)
                 hitCount += 1
                 response = response.content.decode()
+#                 print(response)
 
                 jsonData = json.loads(response)
                 jsonData = jsonData['centers']
-                pprint(jsonData)
+#                 pprint(jsonData)
                 for center in jsonData:
                     centerName = center['name']
                     address = center['address']
@@ -103,11 +104,11 @@ def checkSlotsByPin(pincodes):
                                     print("Slot Available!")
                                     entry_list.append(center['center_id'])
                                     sendMsg(pinCity[i],centerName,address,pin,sessions['vaccine'],sessions['available_capacity'], sessions['available_capacity_dose1'], sessions['available_capacity_dose2'], sessions['min_age_limit'], fee, sessions['date'])
-                            print(pinCity[i],centerName,address,pin,sessions['vaccine'],sessions['available_capacity'], sessions['available_capacity_dose1'], sessions['available_capacity_dose2'], sessions['min_age_limit'], fee, sessions['date'])
-
+                                    print(pinCity[i],centerName,address,pin,sessions['vaccine'],sessions['available_capacity'], sessions['available_capacity_dose1'], sessions['available_capacity_dose2'], sessions['min_age_limit'], fee, sessions['date'])
+            
             except:
                 pass
-            sleep.sleep(2)
+            sleep.sleep(1)
 #                 print(sys.exc_info())
 #         print(i)
         i += 1
@@ -131,8 +132,9 @@ while not done:
     print("loop : " + str(i) + " Time : " + str(now))
     i += 1
     print(entry_list)
-    sleep.sleep(300)
-    if(i%3 == 0):
+    sleep.sleep(10)
+    if(i%7 == 0):
+        # ~10 mins
         #list cleared
         entry_list = []
     print(hitCount)
