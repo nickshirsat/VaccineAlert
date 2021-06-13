@@ -115,7 +115,7 @@ def sendMsg(place,name,address,pin,vaccine,v_count,f_dose, s_dose, age, fee, dat
     elif(place == "363"): #PuneDistrictCode
         bot_chatID = chatIdPuneDistrict
 
-    msg = "ALERT! Slot available!\nName: " + str(name) + "\nAddress : " + str(address) + "\nVaccine : " + str(vaccine) + " : " + str(fee) + "\nAge : " + str(age) + "+" + "\n\nPincode : " + str(pin)+ "\nDate : " + str(date) + "\nTotal Slots : " + str(v_count) + "\n1st Dose slots : " + str(f_dose) + "\n2nd Dose slots : " + str(s_dose)
+    msg = "ALERT! Slot available!\nName: " + str(name) + "\nAddress : " + str(address) + "\nVaccine : " + str(vaccine) + " : " + str(fee) + "\n\nAge : " + str(age) + "+" + "\nPincode : " + str(pin)+ "\nDate : " + str(date) + "\nTotal Slots : " + str(v_count) + "\n1st Dose slots : " + str(f_dose) + "\n2nd Dose slots : " + str(s_dose)
     msg = format(quote_plus(msg))
     send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&text=' + msg
     
